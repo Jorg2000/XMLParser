@@ -26,25 +26,24 @@ public class MainClass {
     //Simple XML Parser
     public static String xmlParse(Node n){
         String res = "";
-        res = res + "<" + n.getNodeName() + showNodeAttributes(n) +  ">";
+        res += "<" + n.getNodeName() + showNodeAttributes(n) +  ">";
         if (n.hasChildNodes()) {
             NodeList nodes = n.getChildNodes();
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node child = nodes.item(i);
-                if (child.getNodeType() == 1) {
-                    res = res + xmlParse(child);
+                if (child.getNodeType() == Node.ELEMENT_NODE) {
+                     res += xmlParse(child);
                 }
-                if (child.getNodeType() == 3) {
-                    res = res + child.getNodeValue();
+                if (child.getNodeType() == Node.TEXT_NODE) {
+                    res += child.getNodeValue();
                 }
             }
         }
-        res = res + "</" + n.getNodeName() + ">";
+        res += "</" + n.getNodeName() + ">";
         return res;
     }
     // This function extracts attributes from XML node
     public static String showNodeAttributes(Node node) {
-        String res = "";
         StringBuilder sb = new StringBuilder();
         NamedNodeMap attributes = node.getAttributes();
 
@@ -52,7 +51,7 @@ public class MainClass {
             Node atrNode = attributes.item(i);
             sb.append(" " + atrNode.getNodeName() + " = " + "\"" + atrNode.getNodeValue() + "\"");
         }
-        res = sb.toString();
-        return res;
+        
+        return sb.toString();;
     }
 }

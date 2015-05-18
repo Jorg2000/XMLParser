@@ -12,34 +12,37 @@ import java.io.IOException;
 
 /**
  * Created by User on 17.05.15.
+ * This code loads XML file and prints his structure.
  */
+
 public class MainClass {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
-        Document doc = db.parse(new File("team0.xml"));
-        System.out.println(doc.getXmlVersion());
+        Document doc = db.parse(new File("test.xml"));
         Node node = doc.getFirstChild();
-        xmlParse(node);
+        System.out.println(xmlParse(node));
     }
-
-    public static void xmlParse(Node n){
-        System.out.print("<" + n.getNodeName() + showNodeAttributes(n) +  ">");
+    //Simple XML Parser
+    public static String xmlParse(Node n){
+        String res = "";
+        res = res + "<" + n.getNodeName() + showNodeAttributes(n) +  ">";
         if (n.hasChildNodes()) {
             NodeList nodes = n.getChildNodes();
             for (int i = 0; i < nodes.getLength(); i++) {
                 Node child = nodes.item(i);
                 if (child.getNodeType() == 1) {
-                    xmlParse(child);
+                    res = res + xmlParse(child);
                 }
                 if (child.getNodeType() == 3) {
-                    System.out.print(child.getNodeValue());
+                    res = res + child.getNodeValue();
                 }
             }
         }
-        System.out.print("</" + n.getNodeName() + ">");
+        res = res + "</" + n.getNodeName() + ">";
+        return res;
     }
-
+    // This function extracts attributes from XML node
     public static String showNodeAttributes(Node node) {
         String res = "";
         StringBuilder sb = new StringBuilder();
@@ -51,7 +54,5 @@ public class MainClass {
         }
         res = sb.toString();
         return res;
-
     }
-
 }
